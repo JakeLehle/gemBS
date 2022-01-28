@@ -688,3 +688,4 @@ void bwt_basic_print(
     bwt_basic_t* const bwt) {
   bwt_basic_print_(stream,bwt);
 }
+

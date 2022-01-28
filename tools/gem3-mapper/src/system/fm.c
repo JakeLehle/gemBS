@@ -129,7 +129,7 @@ void fm_initialize(fm_t* const file_manager) {
   switch (file_manager->file_type) {
     case FM_STREAM:
     case FM_REGULAR_FILE:
-	  case FM_POPEN:
+	 case FM_POPEN:
       break;
 #ifdef HAVE_ZLIB
     case FM_GZIPPED_FILE: {
@@ -290,6 +290,7 @@ fm_t* fm_open_FILE(FILE* const stream,const fm_mode mode) {
   // Return fm
   return file_manager;
 }
+
 fm_t* fm_open_gzFILE(FILE* const stream,const fm_mode mode) {
 #ifndef HAVE_ZLIB
   gem_fatal_error(FM_NO_ZLIB_SUPPORT);
@@ -822,23 +823,24 @@ int fmprintf(fm_t* const file_manager,const char *template,...) {
   va_end(v_args);
   return num_bytes;
 }
+
 int bzgetc(void *stream) {
-#ifdef HAVE_BZLIB
 	int err;
 	char c;
 	int n = BZ2_bzRead(&err,stream,&c,1);
 	if(n < 1) return EOF;
 	return (int)c;
-#else
-	return 0;
-#endif
 }
+
 ssize_t fm_getline(char **buf, size_t *bufsiz, fm_t* const file_manager) {
+	
 	char *ptr, *eptr;
+	
 	if (*buf == NULL || *bufsiz == 0) {
 		*bufsiz = 64;
 		if ((*buf = malloc(*bufsiz)) == NULL) return -1;
 	}
+
 	void *stream;
 	int(*fm_getc)(void *stream);
 	switch (file_manager->file_type) {
@@ -864,6 +866,7 @@ ssize_t fm_getline(char **buf, size_t *bufsiz, fm_t* const file_manager) {
 		GEM_INVALID_CASE();
 		break;
 	}
+	
 	for (ptr = *buf, eptr = *buf + *bufsiz;;) {
 		int c = fm_getc(stream);
 		if (c == EOF) {

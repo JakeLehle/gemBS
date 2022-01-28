@@ -626,6 +626,7 @@ CUDA_BIN_PATH
 HAVE_CUDA
 HAVE_GOLD
 HAVE_LTO
+HAVE_OPENMP
 HAVE_BZLIB
 EGREP
 GREP
@@ -3332,6 +3333,20 @@ done
 
 
 
+for ac_header in omp.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "omp.h" "ac_cv_header_omp_h" "$ac_includes_default"
+if test "x$ac_cv_header_omp_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_OMP_H 1
+_ACEOF
+ HAVE_OPENMP=1
+fi
+
+done
+
+
+
 # LTO configure parameters
 # Check whether --enable-lto was given.
 if test "${enable_lto+set}" = set; then :
@@ -3523,7 +3538,7 @@ eval ac_res=\$$as_ac_File
 $as_echo "$ac_res" >&6; }
 if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
 
-    LDFLAGS+=" -L$cuda_lib_path -L$cuda_lib_path/stubs"
+    LDFLAGS+=" -L$cuda_lib_path"
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lcuda" >&5
 $as_echo_n "checking for main in -lcuda... " >&6; }
 if ${ac_cv_lib_cuda_main+:} false; then :

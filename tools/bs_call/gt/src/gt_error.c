@@ -148,3 +148,4 @@ gt_status gt_tprintf(const char* format,...) {
   va_end(v_args);
   return chars_printed;
 }
+

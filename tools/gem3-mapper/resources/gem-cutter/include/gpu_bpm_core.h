@@ -93,3 +93,4 @@ GPU_INLINE __device__ void cooperative_sum(const uint32_t *A, const uint32_t *B,
 }
 
 #endif /* GPU_BPM_CORE_H_ */
+

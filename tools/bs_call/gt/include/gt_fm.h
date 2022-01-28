@@ -105,3 +105,4 @@ GT_INLINE void gt_fm_write_uint8(gt_fm* const fm,const uint8_t data);
 GT_INLINE void gt_fm_write_mem(gt_fm* const fm,void* const src,const uint64_t num_bytes);
 
 #endif /* GT_FILE_MANAGEMENT_H_ */
+

@@ -43,7 +43,7 @@ search_pipeline_handlers_t* search_pipeline_handlers_new(archive_t* const archiv
   // Stats
   search_pipeline_handlers->mapper_stats = mapper_stats_new();
   // MM
-  search_pipeline_handlers->mm_slab = mm_slab_new_(BUFFER_SIZE_16M,BUFFER_SIZE_16M,MM_UNLIMITED_MEM);
+  search_pipeline_handlers->mm_slab = mm_slab_new_(BUFFER_SIZE_8M,BUFFER_SIZE_16M,MM_UNLIMITED_MEM);
   search_pipeline_handlers->mm_allocator = mm_allocator_new(search_pipeline_handlers->mm_slab);
   // Return
   return search_pipeline_handlers;
@@ -79,6 +79,7 @@ void search_pipeline_handlers_delete(search_pipeline_handlers_t* const search_pi
 void search_pipeline_handlers_prepare_se(
     archive_search_t* const archive_search,
     sequence_t* const sequence,
+	 bisulfite_conversion_t const bisulfite_conversion,
     search_pipeline_handlers_t* const search_pipeline_handlers) {
   // Inject Handlers
   archive_search_inject_handlers(
@@ -86,6 +87,8 @@ void search_pipeline_handlers_prepare_se(
       NULL,&search_pipeline_handlers->nsearch_schedule,
       search_pipeline_handlers->mapper_stats,
       search_pipeline_handlers->mm_allocator);
+  // Set bisulfite conversion
+  archive_search->approximate_search.bisulfite_conversion=bisulfite_conversion;
   // Prepare sequence
   archive_search_prepare_sequence(archive_search,sequence);
 }
@@ -94,6 +97,8 @@ void search_pipeline_handlers_prepare_pe(
     archive_search_t* const archive_search_end2,
     sequence_t* const sequence_end1,
     sequence_t* const sequence_end2,
+	 bisulfite_conversion_t const bisulfite_conversion_end1,
+    bisulfite_conversion_t const bisulfite_conversion_end2,
     search_pipeline_handlers_t* const search_pipeline_handlers) {
   // Inject Handlers
   archive_search_inject_handlers(
@@ -105,6 +110,10 @@ void search_pipeline_handlers_prepare_pe(
       archive_search_end2,search_pipeline_handlers->archive,
       NULL,&search_pipeline_handlers->nsearch_schedule,
       NULL,search_pipeline_handlers->mm_allocator);
+  // Set bisulfite conversion
+  archive_search_end1->approximate_search.bisulfite_conversion=bisulfite_conversion_end1;
+  archive_search_end2->approximate_search.bisulfite_conversion=bisulfite_conversion_end2;
+
   // Prepare sequences
   archive_search_prepare_sequence(archive_search_end1,sequence_end1);
   archive_search_prepare_sequence(archive_search_end2,sequence_end2);

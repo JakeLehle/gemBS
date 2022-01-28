@@ -226,3 +226,4 @@ void cdna_bitwise_text_print(FILE* const stream,cdna_bitwise_text_t* const cdna_
   fflush(stream);
 }
 
+

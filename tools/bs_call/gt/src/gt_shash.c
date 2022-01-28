@@ -219,3 +219,4 @@ GT_INLINE void* gt_shash_iterator_get_element(gt_shash_iterator* const shash_ite
   GT_HASH_CHECK(shash_iterator->next);
   return shash_iterator->next->element;
 }
+

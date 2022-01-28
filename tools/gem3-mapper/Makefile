@@ -53,6 +53,11 @@ complexity:
 setup: 
 	@-mkdir -p $(FOLDER_BIN) $(FOLDER_BUILD) $(FOLDER_LIB)
 	@-ln -s $(FOLDER_RESOURCES) $(FOLDER_INCLUDE)/resources 2> /dev/null ||:
+ifeq ($(HAVE_CUDA),1)
+ifeq ($(HAVE_CUTTER),0)
+	@-git submodule update --init --recursive 2> /dev/null ||:
+endif
+endif
 
 clean:
 	$(MAKE) --directory=resources clean
@@ -61,23 +66,3 @@ clean:
 
 distclean: clean
 	@rm -f config.status config.log Makefile.mk
-
-archive:
-	# Taken from https://ttboj.wordpress.com/2015/07/23/git-archive-with-submodules-and-tar-magic/
-	@echo Running git archive...
-	# Use HEAD if tag doesn't exist yet, so that development is easier...
-	git archive --prefix=gem3-mapper/ -o $(ARCHIVENAME) $(VERSION) 2> /dev/null || (echo 'Warning: $(VERSION) does not exist.' && git archive --prefix=gem3-mapper/ -o $(ARCHIVENAME) HEAD)
-	# TODO: if git archive had a --submodules flag this would easier!
-	mkdir -p archivebuild
-	@echo Running git archive submodules...
-	# I thought I would need --ignore-zeros, but it doesn't seem necessary!
-	p=`pwd` && (echo .; git submodule foreach) | while read entering path; do \
-	    temp="$${path%\'}"; \
-	    temp="$${temp#\'}"; \
-	    path=$$temp; \
-	    [ "$$path" = "" ] && continue; \
-	    (cd $$path && git archive --prefix=gem3-mapper/$$path/ HEAD > $$p/archivebuild/tmp.tar && tar --concatenate --file=$$p/$(ARCHIVENAME) $$p/archivebuild/tmp.tar && rm $$p/archivebuild/tmp.tar); \
-	done
-	rm -rf archivebuild
-	gzip $(ARCHIVENAME)
-

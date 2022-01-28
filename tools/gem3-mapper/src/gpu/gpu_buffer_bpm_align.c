@@ -588,3 +588,4 @@ void gpu_buffer_bpm_align_send(
 void gpu_buffer_bpm_align_receive(
     gpu_buffer_bpm_align_t* const gpu_buffer_bpm_align) {  }
 #endif /* HAVE_CUDA */
+

@@ -155,3 +155,4 @@ void archive_builder_write_index(
   bwt_builder_delete(bwt_builder);
   rank_mtable_builder_delete(rank_mtable);
 }
+

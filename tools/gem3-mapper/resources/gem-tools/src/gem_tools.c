@@ -111,3 +111,4 @@ GT_INLINE uint64_t gt_tools_parse_cvs_float(char* const parameters_list,const ui
   va_end(v_args);
   return num_params_parsed;
 }
+

@@ -38,7 +38,6 @@
  * Search Modes
  */
 typedef enum {
-  mapping_exact,                           // Strictly exact mapping mode
   mapping_adaptive_filtering_fast,         // Adaptive filtering (exact region filtering)
   mapping_neighborhood_search_brute_force, // Neighborhood Search using brute-force
   mapping_neighborhood_search_partition,   // Neighborhood Search using partitions & bidirectional search
@@ -108,7 +107,10 @@ typedef struct {
   /* Mapping strategy (Mapping mode + properties) */
   mapping_mode_t mapping_mode;                         // Mapping mode
   bisulfite_read_t bisulfite_read;                     // Bisulfite mode
+  bool rrbs;
 	char* control_sequences[3];
+  vector_t *restriction_sites;
+
   /* Clipping */
   clipping_type clipping;
   uint64_t clip_left;

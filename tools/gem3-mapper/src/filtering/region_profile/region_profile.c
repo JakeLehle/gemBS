@@ -543,3 +543,4 @@ void region_profile_print_pretty(
   }
   fflush(stream);
 }
+
